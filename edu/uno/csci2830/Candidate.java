@@ -1,7 +1,24 @@
 package edu.uno.csci2830;
 
 public class Candidate {
-    public static void main(String args []) {
-        System.out.println("Voting Application");
+    
+    private String name;
+    private int votes;
+
+    public Candidate(String name) {
+        this.name = name;
+        this.votes = 0;
+    }
+
+    public void addAVote() {
+        votes ++;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getVotes() {
+        return votes;
     }
 }

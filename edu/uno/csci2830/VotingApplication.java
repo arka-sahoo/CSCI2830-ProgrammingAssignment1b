@@ -3,6 +3,7 @@ package edu.uno.csci2830;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class VotingApplication {
 
@@ -17,7 +18,7 @@ public class VotingApplication {
     }
 
     public boolean isvalidID(String id){
-        return id.matches("\\{5}");
+        return id.matches("\\d{5}");
     }
 
     public boolean hasAlreadyVoted(String id) {
@@ -62,15 +63,51 @@ public class VotingApplication {
         System.out.println("\n-----Voting Results-----");
         System.out.println("John: " + john.getVotes() + " votes");
         System.out.println("Jane: " + jane.getVotes() + " votes");
+        }
 
-        if (john.getVotes() > jane.getVotes()) {
-            System.out.println("Winner: John");
+    public static void main(String [] args) {
+        Scanner scanner = new Scanner(System.in);
+        VotingApplication Application = new VotingApplication();
+
+        while (true) {
+            System.out.print("\nEnter your 5-digit ID: ");
+            String id = scanner.nextLine();
+
+            if (id.equalsIgnoreCase("exit")) {
+                break;
+            }
+
+            if (!Application.isvalidID(id)) {
+                System.out.println("invalid ID. It must be a 5-digit ID.");
+                continue;
+            }
+
+            if (Application.hasAlreadyVoted(id)) {
+                System.out.println("Already voted");
+                continue;
+            }
+
+            System.out.println("1. Vote for " + Application.getCandidate1name());
+            System.out.println("2. Vote for " + Application.getCandidate2name());
+            System.out.print("Enter your choice: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input.");
+                scanner.nextLine();
+                continue;
+            }
+
+            int userChoice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (Application.vote(id, userChoice)) {
+                System.out.println("Voted Successfully!");
+            } else {
+                System.out.println("Invalid choice.");
+            }
         }
-        else if (jane.getVotes() > john.getVotes()) {
-            System.out.println("Winner: Jane");
-        }
-        else {
-            System.out.println("This is a draw!");
-        }
+
+        Application.displayVoteResults();
+        scanner.close();
     }
 }
